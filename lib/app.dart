@@ -5,12 +5,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Компоненты',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        '/': (BuildContext context) => const HomePage(title: 'Главная'),
+      },
+      initialRoute: '/',
     );
   }
 }
