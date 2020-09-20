@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../search_data_provider.dart';
+import '../../../data_providers/search_data_provider.dart';
 import 'bloc.dart';
 
 class SearchBloc<T> extends Bloc<SearchEvent, SearchState> {

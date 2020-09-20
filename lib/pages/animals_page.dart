@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_components/entity/animal.dart';
 
+import '../data_providers_impl/animal_search_data_provider.dart';
+import '../entity/animal.dart';
 import 'app_drawer.dart';
 import 'search/bloc/bloc.dart';
 import 'search/delegates/search.dart';
-import 'widgets/animal_search_data_provider.dart';
 
 class AnimalsPage extends StatelessWidget {
   const AnimalsPage({Key key}) : super(key: key);

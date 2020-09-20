@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_components/pages/animals_page.dart';
+
+import 'pages/animals_page.dart';
 import 'pages/fields_page.dart';
 import 'pages/home_page.dart';
+import 'pages/lazy_list_page.dart';
 import 'pages/reactive_form_page.dart';
 
 class App extends StatelessWidget {
@@ -18,6 +20,7 @@ class App extends StatelessWidget {
         '/search': (context) => const AnimalsPage(),
         '/fields': (context) => const FieldsPage(),
         '/reactive': (context) => const ReactiveFormPage(),
+        '/lazy': (context) => const LazyListPage(),
       },
       initialRoute: '/',
     );

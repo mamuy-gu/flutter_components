@@ -30,6 +30,11 @@ class AppDrawer extends StatelessWidget {
             onTap: () =>
                 Navigator.of(context).pushReplacementNamed('/reactive'),
           ),
+          ListTile(
+            title: Text('Ленивая загрузка'),
+            onTap: () =>
+                Navigator.of(context).pushReplacementNamed('/lazy'),
+          ),
         ],
       ),
     );
