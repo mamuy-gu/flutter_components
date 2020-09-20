@@ -22,7 +22,7 @@ class AnimalSearchDataProvider
   Future<List<Animal>> fetched(
     String query,
     int startIndex, [
-    int limit = 8,
+    int limit = 5,
   ]) async {
     const list = [
       Animal(1, 'Cat'),
@@ -54,6 +54,7 @@ class AnimalSearchDataProvider
     final end = startIndex + limit;
     final realEnd = end > sortList.length ? sortList.length : end;
 
+    await Future.delayed(Duration(seconds: 2));
     return sortList.sublist(startIndex, realEnd);
   }
 }

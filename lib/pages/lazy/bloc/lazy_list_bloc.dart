@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../data_providers/lazy_list_data_provider.dart';
 import 'bloc.dart';
@@ -12,6 +13,17 @@ class LazyListBloc<T> extends Bloc<LazyListEvent, LazyListState> {
   LazyListBloc({@required this.searchDataProvider})
       : assert(searchDataProvider != null),
         super(const LazyListState.initial());
+
+  @override
+  Stream<Transition<LazyListEvent, LazyListState>> transformEvents(
+    Stream<LazyListEvent> events,
+    TransitionFunction<LazyListEvent, LazyListState> transitionFn,
+  ) {
+    return super.transformEvents(
+      events.debounceTime(const Duration(milliseconds: 500)),
+      transitionFn,
+    );
+  }
 
   @override
   Stream<LazyListState> mapEventToState(LazyListEvent event) async* {
@@ -29,7 +41,11 @@ class LazyListBloc<T> extends Bloc<LazyListEvent, LazyListState> {
     int startIndex,
     List<Object> currentItems,
   ) async* {
-    yield state.copyWith(status: LazyListStatus.loading, query: query);
+    yield state.copyWith(
+      status: LazyListStatus.loading,
+      query: query,
+      items: currentItems,
+    );
     try {
       final result = await searchDataProvider.fetched(query, startIndex);
       yield state.copyWith(

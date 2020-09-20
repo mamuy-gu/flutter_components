@@ -24,6 +24,7 @@ class LazyList<T> extends StatefulWidget {
 
 class _LazyListState<T> extends State<LazyList<T>> {
   final _scrollController = ScrollController();
+
   final _queryController = TextEditingController();
 
   LazyListBloc<T> _bloc;
@@ -48,43 +49,50 @@ class _LazyListState<T> extends State<LazyList<T>> {
           ),
           controller: _queryController,
           onSubmitted: (value) {
-            _bloc.add(LazyListFetched(_queryController.text));
+            final query = _queryController.text;
+            _bloc.add(LazyListFetched(query));
           },
         ),
-        Expanded(
+        Flexible(
           child: BlocBuilder<LazyListBloc<T>, LazyListState>(
+            buildWhen: (previous, current) {
+              return (current.status != LazyListStatus.loading) ||
+                  current.items.isEmpty;
+            },
             builder: (context, state) {
-              switch (state.status) {
-                case LazyListStatus.error:
-                  return Center(
-                    child: Text(state.message),
-                  );
-                case LazyListStatus.completed:
-                  if (state.items.isEmpty) {
-                    return const Center(
-                      child: Text('Нет данных для отображения'),
-                    );
-                  }
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return listItemDelegate(state.items[index]);
-                    },
-                    itemCount: state.items.length,
-                    controller: _scrollController,
-                  );
-                default:
-                  return Container();
+              if (state.status == LazyListStatus.initial) {
+                return Container();
+              }
+              if (state.status == LazyListStatus.error) {
+                return Center(child: Text(state.message));
+              }
+              if (state.status == LazyListStatus.completed &&
+                  state.items.isEmpty) {
+                return const Center(child: Text('Нет данных для отображения'));
+              } else {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    if (index >= state.items.length) {
+                      return BlocBuilder<LazyListBloc<T>, LazyListState>(
+                        builder: (context, state) {
+                          if (state.status == LazyListStatus.loading) {
+                            return const BottomLoader();
+                          }
+                          return Container();
+                        },
+                      );
+                    }
+                    return listItemDelegate(state.items[index]);
+                  },
+                  itemCount: state.items.length + 1,
+                  controller: _scrollController,
+                  physics: AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
+                  ),
+                );
               }
             },
           ),
-        ),
-        BlocBuilder<LazyListBloc<T>, LazyListState>(
-          builder: (context, state) {
-            if (state.status == LazyListStatus.loading) {
-              return const BottomLoader();
-            }
-            return Container();
-          },
         ),
       ],
     );
@@ -92,6 +100,7 @@ class _LazyListState<T> extends State<LazyList<T>> {
 
   @override
   void dispose() {
+    _queryController.dispose();
     _scrollController.dispose();
     super.dispose();
   }

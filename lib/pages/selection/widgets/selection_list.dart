@@ -35,18 +35,4 @@ class SelectionList extends StatelessWidget {
       },
     );
   }
-
-/*@override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: state.searchResult.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: Icon(Icons.location_city),
-          title: Text(state.searchResult[index].name),
-          onTap: () => close(context, [state.searchResult[index]]),
-        );
-      },
-    );
-  }*/
 }
