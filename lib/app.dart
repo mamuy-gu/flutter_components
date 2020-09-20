@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_components/pages/home_page.dart';
+import 'package:flutter_components/pages/animals_page.dart';
+import 'pages/fields_page.dart';
+import 'pages/home_page.dart';
+import 'pages/reactive_form_page.dart';
 
 class App extends StatelessWidget {
   @override
@@ -11,7 +14,10 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        '/': (BuildContext context) => const HomePage(title: 'Главная'),
+        '/': (context) => const HomePage(title: 'Главная'),
+        '/search': (context) => const AnimalsPage(),
+        '/fields': (context) => const FieldsPage(),
+        '/reactive': (context) => const ReactiveFormPage(),
       },
       initialRoute: '/',
     );
